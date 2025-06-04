@@ -3,7 +3,7 @@ package com.dd.onlinegoodsms.Entity;
 import lombok.Data;
 
 
-public class Result {
+public class Result<T> {
     private int code;
     private String message;
     private Object data;
