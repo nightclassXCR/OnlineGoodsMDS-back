@@ -11,7 +11,7 @@ public class Product {
     private String description;
     private double price;
     private String category;
-    private String image;
+    private byte[] image; // 对应 LONGBLOB
     private int stock;
     private int salesVolume;
     private Timestamp createTime;
@@ -59,11 +59,11 @@ public class Product {
         this.category = category;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -91,7 +91,8 @@ public class Product {
         this.createTime = createTime;
     }
 
-    public Product(String name, String description, double price, String category, String image, int stock, int salesVolume, Timestamp createTime) {
+    public Product(int id, String name, String description, double price, String category, byte[] image, int stock, int salesVolume, Timestamp createTime) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -101,4 +102,7 @@ public class Product {
         this.salesVolume = salesVolume;
         this.createTime = createTime;
     }
+
+
+
 }
