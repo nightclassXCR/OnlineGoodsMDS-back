@@ -1,7 +1,9 @@
 package com.dd.onlinegoodsms.Service;
 
+import com.dd.onlinegoodsms.Entity.OrderDetailDTO;
+import com.dd.onlinegoodsms.Entity.Orders;
 import com.github.pagehelper.PageInfo;
-import org.springframework.core.annotation.Order;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,16 +11,20 @@ import java.util.List;
 
 public interface OrderService {
 
-    public List<Order> findAll();
+    public List<Orders> findAll();
 
-    public Order findById(int id);
+    public Orders findById(int id);
 
-    public int insert(Order order);
+    public  List<Orders> findByUserId(int userId);
+
+    public int insert(Orders order);
 
     public int delete(int id);
 
-    public int update(Order order);
+    public int update(Orders order);
 
-    public PageInfo<Order> searchOrders(String keyword,  int pageNum, int pageSize);
+    public PageInfo<Orders> searchOrders(String keyword,  int pageNum, int pageSize);
+
+    public OrderDetailDTO findOrderDetailById(int id);
 
 }

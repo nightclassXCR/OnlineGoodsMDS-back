@@ -1,11 +1,13 @@
 package com.dd.onlinegoodsms.Service.Impl;
 
+import com.dd.onlinegoodsms.Entity.OrderDetailDTO;
+import com.dd.onlinegoodsms.Entity.Orders;
 import com.dd.onlinegoodsms.Mapper.OrderMapper;
 import com.dd.onlinegoodsms.Service.OrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,25 +20,25 @@ public class OrderImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
-    public List<Order> findAll() {
+    public List<Orders> findAll() {
         return orderMapper.findAll();
     }
 
     @Override
-    public Order findById(int id) {
+    public Orders findById(int id) {
         return orderMapper.findById(id);
     }
 
     @Override
-    public PageInfo<Order> searchOrders(String keyword, int pageNum, int pageSize) {
+    public PageInfo<Orders> searchOrders(String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Order> list = orderMapper.searchOrders(keyword);
+        List<Orders> list = orderMapper.searchOrders(keyword);
         return new PageInfo<>(list);
     }
 
 
     @Override
-    public int insert(Order order) {
+    public int insert(Orders order) {
         return orderMapper.insert(order);
     }
 
@@ -46,8 +48,18 @@ public class OrderImpl implements OrderService {
     }
 
     @Override
-    public int update(Order order) {
+    public int update(Orders order) {
         return orderMapper.update(order);
+    }
+
+    @Override
+    public OrderDetailDTO findOrderDetailById(int id) {
+        return orderMapper.findOrderDetailById(id);
+    }
+
+    @Override
+    public List<Orders> findByUserId(int userId) {
+        return orderMapper.findByUserId(userId);
     }
 
 
