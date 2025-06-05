@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -93,6 +94,12 @@ public class ProductController {
         @PostMapping("/findByCategory")
          public Result findByCategory(String category) {
             List<Product> products = productService.findByCategory(category);
+        return new Result(200, "查询成功", products);
+    }
+
+    @GetMapping("/getTopSellingProducts")
+    public Result getTopSellingProducts(@RequestParam(defaultValue = "5") int limit) {
+        List<Map<String, Object>> products = productService.getTopSellingProducts(limit);
         return new Result(200, "查询成功", products);
     }
 

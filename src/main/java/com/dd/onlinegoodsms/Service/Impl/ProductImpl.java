@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductImpl implements ProductService {
@@ -54,5 +55,10 @@ public class ProductImpl implements ProductService {
     @Override
     public List<Product> findByCategory(String category){
         return ProductMapper.findByCategory(category);
+    }
+
+    @Override
+    public List<Map<String, Object>> getTopSellingProducts(int limit){
+        return ProductMapper.getTopSellingProducts(limit);
     }
 }

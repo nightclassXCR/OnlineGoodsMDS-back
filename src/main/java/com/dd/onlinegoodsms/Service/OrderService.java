@@ -1,5 +1,6 @@
 package com.dd.onlinegoodsms.Service;
 
+import com.github.pagehelper.PageInfo;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,12 @@ public interface OrderService {
 
     public Order findById(int id);
 
-
     public int insert(Order order);
 
     public int delete(int id);
 
     public int update(Order order);
 
-    public List<Order> searchOrders(String keyword);
+    public PageInfo<Order> searchOrders(String keyword,  int pageNum, int pageSize);
 
 }

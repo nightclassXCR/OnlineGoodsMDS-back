@@ -3,6 +3,7 @@ package com.dd.onlinegoodsms.Controller;
 
 import com.dd.onlinegoodsms.Entity.Result;
 import com.dd.onlinegoodsms.Service.OrderService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,11 @@ public class OrderController {
     }
 
     @GetMapping("/search")
-    public Result<List<Order>> search(@RequestParam(required = false) String keyword) {
-        return new Result(200,  "查询成功",orderService.searchOrders(keyword));
+    public Result<PageInfo<Order>> search(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return new Result(200, "查询成功", orderService.searchOrders(keyword, pageNum, pageSize));
     }
 
     @PostMapping

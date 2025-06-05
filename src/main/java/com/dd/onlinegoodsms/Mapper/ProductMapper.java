@@ -4,6 +4,7 @@ import com.dd.onlinegoodsms.Entity.Product;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ProductMapper {
@@ -39,5 +40,9 @@ public interface ProductMapper {
 
     @Select("select * from product where category = #{category}")
     public List<Product> findByCategory(@Param("category") String category);
+
+    @Select("SELECT name, sales_volume FROM product ORDER BY sales_volume DESC LIMIT #{limit}")
+    List<Map<String, Object>> getTopSellingProducts(@Param("limit") int limit);
+
 
 }

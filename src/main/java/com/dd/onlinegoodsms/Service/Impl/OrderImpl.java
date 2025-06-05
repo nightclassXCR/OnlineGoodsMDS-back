@@ -2,6 +2,8 @@ package com.dd.onlinegoodsms.Service.Impl;
 
 import com.dd.onlinegoodsms.Mapper.OrderMapper;
 import com.dd.onlinegoodsms.Service.OrderService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,10 @@ public class OrderImpl implements OrderService {
     }
 
     @Override
-    public List<Order> searchOrders(String keyword) {
-        return orderMapper.searchOrders(keyword);
+    public PageInfo<Order> searchOrders(String keyword, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> list = orderMapper.searchOrders(keyword);
+        return new PageInfo<>(list);
     }
 
 
