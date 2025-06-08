@@ -16,5 +16,7 @@ public interface ProductService {
     public void saveProduct(Product product);
     public List<Product> findByCategory(String category);
     public List<Map<String, Object>>getTopSellingProducts(int limit);
+    public PageInfo<Product> selectByPage(int pageNum, int pageSize);
+    public long countAll();
 
 }

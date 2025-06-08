@@ -61,4 +61,16 @@ public class ProductImpl implements ProductService {
     public List<Map<String, Object>> getTopSellingProducts(int limit){
         return ProductMapper.getTopSellingProducts(limit);
     }
+
+    @Override
+    public PageInfo<Product> selectByPage(int offset, int size){
+        PageHelper.startPage(offset, size);
+        List<Product> list = ProductMapper.selectByPage(offset, size);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public long countAll(){
+        return ProductMapper.countAll();
+    }
 }

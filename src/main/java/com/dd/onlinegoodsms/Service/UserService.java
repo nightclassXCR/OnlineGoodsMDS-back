@@ -2,6 +2,8 @@ package com.dd.onlinegoodsms.Service;
 
 import com.dd.onlinegoodsms.Entity.User;
 import java.util.List;
+import com.github.pagehelper.PageInfo;
+import java.util.Map;
 
 public interface UserService {
     public User login(String username, String password);
@@ -12,4 +14,5 @@ public interface UserService {
     public int delete(int id);
     public List<User> findAll();
 
+    PageInfo<User> pageQuery(int pageNum, int pageSize, String username);
 }

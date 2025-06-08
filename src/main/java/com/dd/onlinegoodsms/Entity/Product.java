@@ -11,7 +11,7 @@ public class Product {
     private String description;
     private double price;
     private String category;
-    private byte[] image; // 对应 LONGBLOB
+    private String image; // 对应 url
     private int stock;
     private int salesVolume;
     private Timestamp createTime;
@@ -59,16 +59,18 @@ public class Product {
         this.category = category;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 
     public int getStock() {
         return stock;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setStock(int stock) {
@@ -91,7 +93,7 @@ public class Product {
         this.createTime = createTime;
     }
 
-    public Product(int id, String name, String description, double price, String category, byte[] image, int stock, int salesVolume, Timestamp createTime) {
+    public Product(int id, String name, String description, double price, String category, String image, int stock, int salesVolume, Timestamp createTime) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -39,4 +39,8 @@ public interface UserMapper {
     @Delete("delete from user where id= #{id}")
     public int delete(@Param("id") int id);
 
+    // 模糊查询用户名
+    @Select("SELECT * FROM user WHERE username LIKE CONCAT('%', #{username}, '%')")
+    List<User> findByUsernameLike(@Param("username") String username);
+
 }

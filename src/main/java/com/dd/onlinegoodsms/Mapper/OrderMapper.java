@@ -32,7 +32,7 @@ public interface OrderMapper {
     int update(Orders order);
 
     @Select("<script>" +
-            "SELECT o.id, u.name AS userName, p.name AS productName, " +
+            "SELECT o.id, u.username AS userName, p.name AS productName, " +
             "o.quantity, o.total_price, o.order_time " +
             "FROM orders o " +
             "JOIN user u ON o.user_id = u.id " +
