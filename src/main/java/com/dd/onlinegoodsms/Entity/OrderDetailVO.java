@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 
 @Data
-public class OrderDetailDTO {
+public class OrderDetailVO {
     private int id; // 订单ID
     private int userId;
     private String username; // 用户名

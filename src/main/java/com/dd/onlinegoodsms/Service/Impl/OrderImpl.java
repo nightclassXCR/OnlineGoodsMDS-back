@@ -1,15 +1,17 @@
 package com.dd.onlinegoodsms.Service.Impl;
 
-import com.dd.onlinegoodsms.Entity.OrderDetailDTO;
+import com.dd.onlinegoodsms.Entity.OrderDetailVO;
 import com.dd.onlinegoodsms.Entity.Orders;
 import com.dd.onlinegoodsms.Mapper.OrderMapper;
 import com.dd.onlinegoodsms.Service.OrderService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,11 +31,15 @@ public class OrderImpl implements OrderService {
         return orderMapper.findById(id);
     }
 
-    @Override
-    public PageInfo<Orders> searchOrders(String keyword, int pageNum, int pageSize) {
+    public Page<OrderDetailVO> searchOrders(String keyword, int pageNum, int pageSize) {
+        // 启动分页，PageHelper会自动对后面紧跟的查询做分页处理
         PageHelper.startPage(pageNum, pageSize);
-        List<Orders> list = orderMapper.searchOrders(keyword);
-        return new PageInfo<>(list);
+
+        // 这里执行分页查询，结果会自动被PageHelper拦截，返回Page对象
+        List<OrderDetailVO> list = orderMapper.searchOrders(keyword);
+
+        // list本身就是Page对象，可以直接强转
+        return (Page<OrderDetailVO>) list;
     }
 
 
@@ -53,7 +59,7 @@ public class OrderImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailDTO findOrderDetailById(int id) {
+    public OrderDetailVO findOrderDetailById(int id) {
         return orderMapper.findOrderDetailById(id);
     }
 

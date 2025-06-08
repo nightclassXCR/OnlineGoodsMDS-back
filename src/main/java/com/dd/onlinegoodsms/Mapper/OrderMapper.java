@@ -1,7 +1,7 @@
 package com.dd.onlinegoodsms.Mapper;
 
 
-import com.dd.onlinegoodsms.Entity.OrderDetailDTO;
+import com.dd.onlinegoodsms.Entity.OrderDetailVO;
 import com.dd.onlinegoodsms.Entity.Orders;
 import org.apache.ibatis.annotations.*;
 
@@ -12,14 +12,13 @@ import java.util.List;
 public interface OrderMapper {
 
     @Select("select * from orders")
-    public List<Orders> findAll();
+    List<Orders> findAll();
 
     @Select("select * from orders where id= #{id}")
-    public Orders findById(@Param("id") int id);
-
+    Orders findById(@Param("id") int id);
 
     @Select("select * from orders where user_id= #{user_id}")
-    public List<Orders> findByUserId(@Param("user_id") int user_id);
+    List<Orders> findByUserId(@Param("user_id") int user_id);
 
     @Insert("INSERT INTO orders(user_id, product_id, quantity, total_price) " +
             "VALUES(#{userId}, #{productId}, #{quantity}, #{totalPrice})")
@@ -31,29 +30,52 @@ public interface OrderMapper {
     @Update("UPDATE orders SET user_id=#{userId}, product_id=#{productId}, quantity=#{quantity}, total_price=#{totalPrice} WHERE id=#{id}")
     int update(Orders order);
 
-    @Select("<script>" +
-            "SELECT o.id, u.username AS userName, p.name AS productName, " +
+    /**
+     * 联合查询订单，支持按关键字搜索用户名、商品名、状态，分页
+     */
+    @Select({
+            "<script>",
+            "SELECT o.id, o.user_id, u.username, o.product_id, p.name, o.quantity, o.total_price, o.order_time",
+            "FROM orders o",
+            "LEFT JOIN user u ON o.user_id = u.id",
+            "LEFT JOIN product p ON o.product_id = p.id",
+            "WHERE 1=1",
+            "<if test='keyword != null and keyword != \"\"'>",
+            "  AND (u.username LIKE CONCAT('%', #{keyword}, '%')",
+            "    OR p.product_name LIKE CONCAT('%', #{keyword}, '%')",
+            "    OR o.status LIKE CONCAT('%', #{keyword}, '%'))",
+            "</if>",
+            "ORDER BY o.order_time DESC",
+            "</script>"
+    })
+    List<OrderDetailVO> searchOrders(@Param("keyword") String keyword);
+
+
+    /**
+     * 查询总数（用于分页）
+     */
+    @Select({
+            "<script>",
+            "SELECT COUNT(1) FROM orders o",
+            "LEFT JOIN user u ON o.user_id = u.id",
+            "LEFT JOIN product p ON o.product_id = p.id",
+            "WHERE 1=1",
+            "<if test='keyword != null and keyword != \"\"'>",
+            "  AND (u.username LIKE CONCAT('%', #{keyword}, '%')",
+            "    OR p.product_name LIKE CONCAT('%', #{keyword}, '%')",
+            "    OR o.status LIKE CONCAT('%', #{keyword}, '%'))",
+            "</if>",
+            "</script>"
+    })
+    int countSearchOrders(@Param("keyword") String keyword);
+
+    // 下面SQL语句修正：加逗号和空格，保证语法正确
+    @Select("SELECT o.id, o.user_id, u.username, o.product_id, p.name AS name, " +
             "o.quantity, o.total_price, o.order_time " +
             "FROM orders o " +
             "JOIN user u ON o.user_id = u.id " +
             "JOIN product p ON o.product_id = p.id " +
-            "WHERE 1=1 " +
-            "<if test='keyword != null and keyword != \"\"'>" +
-            "AND (u.name LIKE CONCAT('%', #{keyword}, '%') " +
-            "OR p.name LIKE CONCAT('%', #{keyword}, '%')) " +
-            "</if>" +
-            "ORDER BY o.order_time DESC" +
-            "</script>")
-    List<Orders> searchOrders(@Param("keyword") String keyword);
-
-    @Select("""
-    SELECT o.id, o.user_id, u.username, o.product_id, p.name as product_name,
-           o.quantity, o.total_price, o.order_time
-    FROM orders o
-    JOIN user u ON o.user_id = u.id
-    JOIN product p ON o.product_id = p.id
-    WHERE o.id = #{id}
-""")
+            "WHERE o.id = #{id}")
     @Results({
             @Result(column="id", property="id"),
             @Result(column="user_id", property="userId"),
@@ -64,5 +86,6 @@ public interface OrderMapper {
             @Result(column="total_price", property="totalPrice"),
             @Result(column="order_time", property="orderTime")
     })
-    public OrderDetailDTO findOrderDetailById(@Param("id") int id);
+    OrderDetailVO findOrderDetailById(@Param("id") int id);
 }
+

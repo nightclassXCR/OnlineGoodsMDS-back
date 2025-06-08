@@ -13,6 +13,5 @@ public interface UserService {
     public int update(User user);
     public int delete(int id);
     public List<User> findAll();
-
     PageInfo<User> pageQuery(int pageNum, int pageSize, String username);
 }
