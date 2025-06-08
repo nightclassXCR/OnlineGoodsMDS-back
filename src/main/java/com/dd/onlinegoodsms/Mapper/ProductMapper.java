@@ -9,11 +9,20 @@ import java.util.Map;
 @Mapper
 public interface ProductMapper {
 
+
     @Select("select * from product")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     List<Product> findAll();
 
+
     @Select("select * from product where id= #{id}")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     Product findById(@Param("id") int id);
+
 
     // 模糊查询
     @Select("<script>" +
@@ -25,6 +34,9 @@ public interface ProductMapper {
             "</where>" +
             "ORDER BY id DESC" +
             "</script>")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     List<Product> findByNameLike(@Param("name") String name);
 
     @Insert("INSERT INTO product(name, description, price, category, image_url, stock, sales_volume, create_time) " +
@@ -39,15 +51,27 @@ public interface ProductMapper {
     int deleteById(Integer id);
 
     @Select("select * from product where category = #{category}")
-    public List<Product> findByCategory(@Param("category") String category);
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
+    List<Product> findByCategory(@Param("category") String category);
 
     @Select("SELECT name, sales_volume FROM product ORDER BY sales_volume DESC LIMIT #{limit}")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     List<Map<String, Object>> getTopSellingProducts(@Param("limit") int limit);
 
     @Select("SELECT * FROM product LIMIT #{offset}, #{size}")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     List<Product> selectByPage(@Param("offset") int offset, @Param("size") int size);
 
     @Select("SELECT COUNT(*) FROM product")
+    @Results({
+            @Result(property = "image", column = "image_url")
+    })
     long countAll();
 
 

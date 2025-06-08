@@ -43,6 +43,7 @@ public class ProductController {
 
     @PostMapping("/update")
     public Result update(@RequestBody Product product) {
+
         productService.update(product);
         return new Result(200, "修改成功", product);
     }
@@ -54,6 +55,9 @@ public class ProductController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         PageInfo<Product> result = productService.findByNameLike(name, pageNum, pageSize);
+
+        System.out.println("result = " + result);
+
         return new Result(200, "查询成功", result);
     }
 
