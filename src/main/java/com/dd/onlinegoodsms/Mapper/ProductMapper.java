@@ -44,7 +44,7 @@ public interface ProductMapper {
     void insertProduct(Product product);
 
     @Update("UPDATE product SET name = #{name}, description = #{description}, " +
-            "price = #{price}, stock = #{stock} WHERE id = #{id}")
+            "price = #{price}, stock = #{stock},image_url = #{image} WHERE id = #{id}")
     int update(Product product);
 
     @Delete("DELETE FROM product WHERE id = #{id}")
@@ -62,7 +62,7 @@ public interface ProductMapper {
     })
     List<Map<String, Object>> getTopSellingProducts(@Param("limit") int limit);
 
-    @Select("SELECT * FROM product LIMIT #{offset}, #{size}")
+    @Select("SELECT * FROM product ORDER BY id DESC LIMIT #{offset}, #{size}")
     @Results({
             @Result(property = "image", column = "image_url")
     })

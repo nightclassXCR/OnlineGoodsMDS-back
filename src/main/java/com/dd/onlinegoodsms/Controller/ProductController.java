@@ -41,11 +41,68 @@ public class ProductController {
         return new Result(200, "查询成功", product);
     }
 
-    @PostMapping("/update")
-    public Result update(@RequestBody Product product) {
+//    @PostMapping("/update")
+//    public Result update(@RequestBody Product product) {
+//
+//        productService.update(product);
+//        return new Result(200, "修改成功", product);
+//    }
 
-        productService.update(product);
-        return new Result(200, "修改成功", product);
+    @PostMapping("/update")
+    public Result update(
+            @RequestParam("id") int id,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("category") String category,
+            @RequestParam("stock") int stock,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        try {
+            Product product = productService.findById(id);
+            if (product == null) {
+                return new Result(500, "商品不存在", null);
+            }
+            String uploadDir = "D:/upload-dir/";
+            String imageUrl = product.getImage(); // 默认保留原图
+
+            if (file != null && !file.isEmpty()) {
+                // 删除旧文件（如果存在）
+                if (imageUrl != null) {
+                    File oldFile = new File(uploadDir + imageUrl.replace("/uploads/", ""));
+                    if (oldFile.exists()) {
+                        oldFile.delete();
+                    }
+                }
+
+                // 生成唯一文件名并保存
+                String originalFilename = file.getOriginalFilename();
+                String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+                String filename = UUID.randomUUID().toString() + suffix;
+                File dest = new File(uploadDir + filename);
+
+                if (!dest.getParentFile().exists()) {
+                    dest.getParentFile().mkdirs();
+                }
+                file.transferTo(dest);
+
+                imageUrl = "/uploads/" + filename;
+            }
+
+            // 更新商品属性
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setCategory(category);
+            product.setStock(stock);
+            product.setImage(imageUrl);
+
+            productService.update(product);
+            return new Result(200, "更新成功", product);
+
+        } catch (IOException e) {
+            return new Result(400, "更新失败：" + e.getMessage(), null);
+        }
     }
 
     @GetMapping("/search")

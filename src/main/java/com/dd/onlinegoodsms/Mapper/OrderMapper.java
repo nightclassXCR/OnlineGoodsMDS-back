@@ -35,18 +35,26 @@ public interface OrderMapper {
      */
     @Select({
             "<script>",
-            "SELECT o.id, o.user_id, u.username, o.product_id, p.name, o.quantity, o.total_price, o.order_time",
+            "SELECT o.id, o.user_id, u.username, o.product_id, p.name AS productName, o.quantity, o.total_price, o.order_time",
             "FROM orders o",
             "LEFT JOIN user u ON o.user_id = u.id",
             "LEFT JOIN product p ON o.product_id = p.id",
             "WHERE 1=1",
             "<if test='keyword != null and keyword != \"\"'>",
             "  AND (u.username LIKE CONCAT('%', #{keyword}, '%')",
-            "    OR p.product_name LIKE CONCAT('%', #{keyword}, '%')",
-            "    OR o.status LIKE CONCAT('%', #{keyword}, '%'))",
+            "    OR p.name LIKE CONCAT('%', #{keyword}, '%'))",
             "</if>",
             "ORDER BY o.order_time DESC",
             "</script>"
+    }) @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "product_id", property = "productId"),
+            @Result(column = "productName", property = "productName"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "total_price", property = "totalPrice"),
+            @Result(column = "order_time", property = "orderTime")
     })
     List<OrderDetailVO> searchOrders(@Param("keyword") String keyword);
 

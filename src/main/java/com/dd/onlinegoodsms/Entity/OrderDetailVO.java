@@ -13,26 +13,29 @@ public class OrderDetailVO {
     private int productId;
     private String productName; // 商品名
     private int quantity;
+    private double totalPrice;
+    private Timestamp orderTime;
 
-    private User user;
-    private Product product;
 
+//    private User user;
+//    private Product product;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public Product getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -97,6 +100,5 @@ public class OrderDetailVO {
         this.userId = userId;
     }
 
-    private double totalPrice;
-    private Timestamp orderTime;
+
 }
