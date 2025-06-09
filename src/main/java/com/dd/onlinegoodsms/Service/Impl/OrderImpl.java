@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderImpl implements OrderService {
@@ -66,6 +68,11 @@ public class OrderImpl implements OrderService {
     @Override
     public List<Orders> findByUserId(int userId) {
         return orderMapper.findByUserId(userId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getDailySales(Long productId, Date startDate, Date endDate) {
+        return orderMapper.getDailySales(productId, startDate, endDate);
     }
 
 

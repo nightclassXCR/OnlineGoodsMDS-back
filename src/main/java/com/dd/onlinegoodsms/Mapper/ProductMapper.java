@@ -44,7 +44,7 @@ public interface ProductMapper {
     void insertProduct(Product product);
 
     @Update("UPDATE product SET name = #{name}, description = #{description}, " +
-            "price = #{price}, stock = #{stock},image_url = #{image} WHERE id = #{id}")
+            "price = #{price}, stock = #{stock},image_url = #{image},sales_volume = #{salesVolume} WHERE id = #{id}")
     int update(Product product);
 
     @Delete("DELETE FROM product WHERE id = #{id}")
@@ -56,9 +56,11 @@ public interface ProductMapper {
     })
     List<Product> findByCategory(@Param("category") String category);
 
-    @Select("SELECT name, sales_volume FROM product ORDER BY sales_volume DESC LIMIT #{limit}")
+    @Select("SELECT name, sales_volume, image_url, stock FROM product ORDER BY sales_volume DESC LIMIT #{limit}")
     @Results({
-            @Result(property = "image", column = "image_url")
+            @Result(property = "image", column = "image_url"),
+            @Result(property = "salesVolume", column = "sales_volume"),
+            @Result(property = "stock", column = "stock")
     })
     List<Map<String, Object>> getTopSellingProducts(@Param("limit") int limit);
 

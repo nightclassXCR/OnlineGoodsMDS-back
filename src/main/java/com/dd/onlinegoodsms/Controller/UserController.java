@@ -80,7 +80,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/findAll")
+    @GetMapping("/findAll")
     public Result findAll()
     {
         return new Result(200, "查询成功", userService.findAll());

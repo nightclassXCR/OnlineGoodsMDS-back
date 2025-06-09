@@ -6,7 +6,9 @@ import com.dd.onlinegoodsms.Entity.Orders;
 import org.apache.ibatis.annotations.*;
 
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -95,5 +97,16 @@ public interface OrderMapper {
             @Result(column="order_time", property="orderTime")
     })
     OrderDetailVO findOrderDetailById(@Param("id") int id);
+
+    @Select(" SELECT DATE_FORMAT(order_time, '%Y-%m-%d') AS date,"+
+            "SUM(quantity) AS total_sales " +
+            "FROM orders " +
+            "WHERE product_id = #{productId} " +
+            "AND order_time BETWEEN #{startDate} AND #{endDate} " +
+            "GROUP BY DATE_FORMAT(order_time, '%Y-%m-%d') " +
+            "ORDER BY date")
+    List<Map<String, Object>> getDailySales(@Param("productId") Long productId,
+                                            @Param("startDate") Date startDate,
+                                            @Param("endDate") Date endDate);
 }
 

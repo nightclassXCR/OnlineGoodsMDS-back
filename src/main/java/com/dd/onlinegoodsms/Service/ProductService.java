@@ -19,4 +19,5 @@ public interface ProductService {
     public PageInfo<Product> selectByPage(int pageNum, int pageSize);
     public long countAll();
 
+
 }
