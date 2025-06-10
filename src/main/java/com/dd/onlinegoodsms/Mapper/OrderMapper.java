@@ -64,22 +64,9 @@ public interface OrderMapper {
     /**
      * 查询总数（用于分页）
      */
-    @Select({
-            "<script>",
-            "SELECT COUNT(1) FROM orders o",
-            "LEFT JOIN user u ON o.user_id = u.id",
-            "LEFT JOIN product p ON o.product_id = p.id",
-            "WHERE 1=1",
-            "<if test='keyword != null and keyword != \"\"'>",
-            "  AND (u.username LIKE CONCAT('%', #{keyword}, '%')",
-            "    OR p.product_name LIKE CONCAT('%', #{keyword}, '%')",
-            "    OR o.status LIKE CONCAT('%', #{keyword}, '%'))",
-            "</if>",
-            "</script>"
-    })
-    int countSearchOrders(@Param("keyword") String keyword);
+    @Select("SELECT COUNT(*) FROM product")
+    int countSearchOrders();
 
-    // 下面SQL语句修正：加逗号和空格，保证语法正确
     @Select("SELECT o.id, o.user_id, u.username, o.product_id, p.name AS name, " +
             "o.quantity, o.total_price, o.order_time " +
             "FROM orders o " +

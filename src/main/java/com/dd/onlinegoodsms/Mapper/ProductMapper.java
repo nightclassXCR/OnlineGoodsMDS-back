@@ -19,7 +19,8 @@ public interface ProductMapper {
 
     @Select("select * from product where id= #{id}")
     @Results({
-            @Result(property = "image", column = "image_url")
+            @Result(property = "image", column = "image_url"),
+            @Result(property = "salesVolume", column = "sales_volume"),
     })
     Product findById(@Param("id") int id);
 

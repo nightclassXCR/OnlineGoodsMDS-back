@@ -45,8 +45,8 @@ public class OrderController {
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
 
-        Page<OrderDetailVO> page = orderService.searchOrders(keyword, pageNum, pageSize);
-        return new Result(200,  "查询成功",page);
+        PageInfo<OrderDetailVO> pageInfo = orderService.searchOrders(keyword, pageNum, pageSize);
+        return new Result(200,  "查询成功",pageInfo);
     }
 
 
@@ -60,7 +60,6 @@ public class OrderController {
         if(product.getStock() < quantity){
             return new Result(400, "库存不足", null);
         }
-
 
         double totalPrice = product.getPrice() * quantity;
         Orders order =new Orders();
@@ -87,9 +86,9 @@ public class OrderController {
         if (order == null) {
             return new Result<>(404, "订单不存在", null);
         }
-        int oldQuantity = order.getQuantity();
-        int newQuantity = vo.getQuantity();
-        int diff = newQuantity - oldQuantity;
+        int oldQuantity = order.getQuantity();//500
+        int newQuantity = vo.getQuantity();//1000
+        int diff = newQuantity - oldQuantity;//500
         if (product == null) {
             return new Result<>(404, "商品不存在", null);
         }
@@ -168,6 +167,12 @@ public class OrderController {
         List<Map<String, Object>> dailySales = orderService.getDailySales(productId, start, end);
         return new Result<>(200, "查询成功", dailySales);
 
+    }
+
+    @GetMapping("/countAll")
+    public Result<Long> countAll() {
+        long count = orderService.countSearchOrders();
+        return new Result<>(200, "查询成功", orderService.countSearchOrders());
     }
 
 }

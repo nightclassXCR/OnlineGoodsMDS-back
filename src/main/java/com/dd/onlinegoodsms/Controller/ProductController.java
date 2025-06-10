@@ -41,13 +41,6 @@ public class ProductController {
         return new Result(200, "查询成功", product);
     }
 
-//    @PostMapping("/update")
-//    public Result update(@RequestBody Product product) {
-//
-//        productService.update(product);
-//        return new Result(200, "修改成功", product);
-//    }
-
     @PostMapping("/update")
     public Result update(
             @RequestParam("id") int id,

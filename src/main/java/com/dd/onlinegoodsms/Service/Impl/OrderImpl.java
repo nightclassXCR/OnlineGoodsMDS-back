@@ -33,7 +33,7 @@ public class OrderImpl implements OrderService {
         return orderMapper.findById(id);
     }
 
-    public Page<OrderDetailVO> searchOrders(String keyword, int pageNum, int pageSize) {
+    public PageInfo<OrderDetailVO> searchOrders(String keyword, int pageNum, int pageSize) {
         // 启动分页，PageHelper会自动对后面紧跟的查询做分页处理
         PageHelper.startPage(pageNum, pageSize);
 
@@ -41,7 +41,7 @@ public class OrderImpl implements OrderService {
         List<OrderDetailVO> list = orderMapper.searchOrders(keyword);
 
         // list本身就是Page对象，可以直接强转
-        return (Page<OrderDetailVO>) list;
+        return new PageInfo<>(list);
     }
 
 
@@ -73,6 +73,11 @@ public class OrderImpl implements OrderService {
     @Override
     public List<Map<String, Object>> getDailySales(Long productId, Date startDate, Date endDate) {
         return orderMapper.getDailySales(productId, startDate, endDate);
+    }
+
+    @Override
+    public int countSearchOrders() {
+        return orderMapper.countSearchOrders();
     }
 
 
